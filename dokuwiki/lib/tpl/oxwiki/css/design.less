@@ -11,7 +11,7 @@
 ********************************************************************/
 
 #dokuwiki__header {
-    padding: 2em 0 1.5em;
+    padding: 0em 0 1.5em;
 
     .headings,
     .tools {
@@ -349,13 +349,10 @@ form.search {
     span {
         font-size: 0.875em;
         border: solid @ini_background_alt;
-        border-width: 1px 1px 0;
+        border-width: 1px;
         background-color: @ini_background;
         color: @ini_text_alt;
-        padding: .1em .35em;
-        border-top-left-radius: 2px;
-        border-top-right-radius: 2px;
-        box-shadow: 0 0 .5em @ini_text_alt;
+        padding: .1em .35em;        
         display: block;
     }
 }
@@ -363,14 +360,12 @@ form.search {
 .dokuwiki div.page {
     clear: both;
     background: @ini_background;
-    color: inherit;
-    border: 1px solid @ini_background_alt;
-    box-shadow: 0 0 .5em @ini_text_alt;
-    border-radius: 2px;
-    padding: 1.556em 2em 2em;
+    color: inherit;    
+    padding: 1.556em 0.5em 1.6em;
     margin-bottom: .5em;
     overflow: hidden;
     word-wrap: break-word;
+    border-bottom: 1px solid @ini_background_alt;
 }
 
 .dokuwiki .docInfo {
