@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<plugin>
+	<name>Oxwall Wiki</name>
+	<key>oxwiki</key>
+	<description>Integrated DokuWiki for Oxwall</description>
+    <author>SongPhi</author>
+    <authorEmail>sales@songphi.com</authorEmail>
+	<authorUrl>http://owdemo.songphi.com</authorUrl>
+	<developerKey>21a0f37c3797eb620e85c5fe75ce5294</developerKey>
+    <build>10000</build>
+    <copyright>(c) 2015 SongPhi LLC.</copyright>
+	<license>Apache 2.0</license>
+    <licenseUrl>https://raw.githubusercontent.com/SongPhi/spvideolite/master/LICENSE</licenseUrl>
+</plugin>

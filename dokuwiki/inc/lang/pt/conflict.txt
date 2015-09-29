@@ -1,0 +1,5 @@
+====== Uma versão mais recente existe ======
+
+Existe uma versão mais recente do documento editado. Isso acontece quando um outro usuário alterou o documento enquanto você estava editando.
+
+Examine cuidadosamente as diferenças mostradas abaixo, em seguida, decida qual versão manter. Se você escolher ''salvar '', sua versão será salva. Clique ''cancelar '' para manter a versão atual.
