@@ -1,7 +1,7 @@
 // if jQuery was loaded, let's make it noConflict here.
-if ('function' === typeof jQuery && 'function' === typeof jQuery.noConflict) {
-    jQuery.noConflict();
-}
+//if ('function' === typeof jQuery && 'function' === typeof jQuery.noConflict) {
+    //jQuery.noConflict();
+//}
 
 /**
  * Some browser detection
