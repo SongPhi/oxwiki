@@ -68,7 +68,7 @@ class OXWIKI_CTRL_Doku extends OW_ActionController
 	        $content = ob_get_contents();
 	        ob_end_clean();
             $html_head = "";
-            $content = preg_replace_callback('/<!--OXWIKI_HTML_HEAD-->(.*?)\\/<!--OXWIKI_HTML_HEAD-->/s',
+            $content = preg_replace_callback('/<!--OXWIKI_HTML_HEAD-->(.*?)<!--\\/OXWIKI_HTML_HEAD-->/s',
                 function($matches) use (&$html_head) { $html_head = $matches[1]; return ""; }, 
                 $content);
             
