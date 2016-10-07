@@ -3,19 +3,20 @@
 class OXWIKI_CTRL_Doku extends OW_ActionController
 {
     public function index($params) {
-    	$uri = implode('/', $params);
-    	$query_string = $_SERVER['QUERY_STRING'];
-    	$matches = array();
+        $uri = implode('/', $params);
+        $query_string = $_SERVER['QUERY_STRING'];
+
+        $matches = array();
 
         define('DOKU_E_LEVEL',0);
 
-    	$content = "";
+        $content = "";
 
-    	// if (strpos($uri, '?')!==false) {
-    	// 	$parts = explode('?', $uri);
-    	// 	$uri = $part[0];
-    	// 	$query_string = $parts[1];
-    	// }
+        // if (strpos($uri, '?')!==false) {
+        //  $parts = explode('?', $uri);
+        //  $uri = $part[0];
+        //  $query_string = $parts[1];
+        // }
 
         if (substr($uri, 0, 6)=='_media') {
             $query_string = 'media=' . substr($uri, 7) . '&' . $query_string;
@@ -30,18 +31,51 @@ class OXWIKI_CTRL_Doku extends OW_ActionController
             }
         }
 
-    	if (strlen($uri)>=5 && substr($uri, -4) == '.php') {
-    		if (file_exists(DOKUWIKI_DIR_ROOT . DS . $uri)) {
-    			ob_start();
-		        require_once ( DOKUWIKI_DIR_ROOT . DS . $uri );
-		        $content = ob_get_contents();
-		        ob_clean();
+        if (strlen($uri)>=5 && substr($uri, -4) == '.php') {
+            // die(DOKUWIKI_DIR_ROOT . DS . $uri);
+            if (file_exists(DOKUWIKI_DIR_ROOT . DS . $uri)) {
+                ob_start();
+                require_once ( DOKUWIKI_DIR_ROOT . DS . $uri );
+                $content = ob_get_contents();
+                ob_clean();               
+                
 
-                if (strlen($uri)>=8 && substr($uri, -8) == 'ajax.php') {
-                    echo $content; die();
-                }
-    		}
-    	} if (preg_match('/\.(jpg|png|gif|js|css)$/i', $uri, $matches)) {
+                echo $content; die();
+
+                // if (strlen($uri)>=8 && substr($uri, -8) == 'ajax.php') {
+                //     echo $content; die();
+                // }
+
+                // if (strlen($uri)>=8 && substr($uri, -16) == 'mediamanager.php') {
+                //     echo $content; die();
+                // }
+            }
+        } 
+
+        #RewriteRule               lib/exe/fetch.php?media=$1  [QSA,L]
+        #RewriteRule              lib/exe/detail.php?media=$1  [QSA,L]
+        #RewriteRule      doku.php?do=export_$1&id=$2  [QSA,L]
+        if (preg_match('/^_detail\/(.*)/i', $uri, $matches)) {            
+            $_GET["media"] = $matches[1];
+            ob_start(); 
+            global $IMG, $ID, $REV, $INFO, $INPUT;
+            require_once ( DOKUWIKI_DIR_ROOT . DS . "lib/exe/detail.php" );
+            $content = ob_get_contents();
+            ob_end_clean();
+
+            $html_head = "";
+            $content = preg_replace_callback('/<!--OXWIKI_HTML_HEAD-->(.*?)<!--\\/OXWIKI_HTML_HEAD-->/s',
+                function($matches) use (&$html_head) { $html_head = $matches[1]; return ""; }, 
+                $content);
+            
+            if (strlen($html_head)>0) {
+                OW::getDocument()->addCustomHeadInfo($html_head);
+            }
+
+        } else if (preg_match('/^_export\/([^\/]+)\/(.*)/i', $uri, $matches)) {
+
+        } else if (preg_match('/\.(jpg|png|gif|js|css)(\??.*?)$/i', $uri, $matches)) {
+
             if ($matches[1]=="jpg" || $matches[1]=="png" || $matches[1]=="gif") {
                 header('Pragma: public');
                 header('Cache-Control: max-age=86400');
@@ -60,13 +94,13 @@ class OXWIKI_CTRL_Doku extends OW_ActionController
                 echo file_get_contents(DOKUWIKI_DIR_ROOT . DS . $uri);
             }            
             die();
-    	} else {
+        } else {
             $_SERVER['QUERY_STRING'] = 'id='.$uri;
             $_GET['id']=$uri;
-    		ob_start();
-	        require_once ( DOKUWIKI_DIR_ROOT . DS . "doku.php" );
-	        $content = ob_get_contents();
-	        ob_end_clean();
+            ob_start();
+            require_once ( DOKUWIKI_DIR_ROOT . DS . "doku.php" );
+            $content = ob_get_contents();
+            ob_end_clean();
             $html_head = "";
             $content = preg_replace_callback('/<!--OXWIKI_HTML_HEAD-->(.*?)<!--\\/OXWIKI_HTML_HEAD-->/s',
                 function($matches) use (&$html_head) { $html_head = $matches[1]; return ""; }, 
@@ -75,9 +109,10 @@ class OXWIKI_CTRL_Doku extends OW_ActionController
             if (strlen($html_head)>0) {
                 OW::getDocument()->addCustomHeadInfo($html_head);
             }
+
         }
 
-    	// var_dump(headers_list()); die();
+        // var_dump(headers_list()); die();
 
         $this->assign('content',$content);
     }
